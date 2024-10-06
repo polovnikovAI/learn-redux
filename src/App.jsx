@@ -2,11 +2,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { addCustomerAction, removeCustomerAction } from './store/customerReducer';
 import { fetchCustomers } from './asyncAction/customers';
+import { asyncDecrementCreator, asyncIncrementCreator, decrementCreator, incrementCreator } from './store/countReducer';
+import { fetchUsers, setUsers } from './store/userReducer';
 
 function App() {
     const dispatch = useDispatch();
     const cash = useSelector((state) => state.cash.cash);
     const customers = useSelector((state) => state.customers.customers);
+    const count = useSelector((state) => state.count.count)
+    const users = useSelector((state) => state.users.users)
 
     const addCash = (cash) => {
         dispatch({ type: 'ADD_CASH', payload: cash });
@@ -60,6 +64,29 @@ function App() {
             ) : (
                 <div style={{ fontSize: '35px', textAlign: 'center', marginTop: '30px' }}>Клиенты отсутствуют</div>
             )}
+            <br />
+            <br />
+            <div style={{fontSize: '40px', textAlign: 'center', marginTop: '30px', color: 'orange'}}>
+                count = {count}
+                <br />
+                <button onClick={() => dispatch(asyncIncrementCreator())}>ИНКРЕМЕНТ++</button>
+                <button onClick={() => dispatch(asyncDecrementCreator())}>ДЕКРЕМЕНТ--</button>
+            </div>
+            <br />
+            <br />
+            <div style={{fontSize: '40px', textAlign: 'center', marginTop: '30px', color: 'orange'}}>
+                list users
+                <br />
+                <button onClick={() => dispatch(fetchUsers())}>GET USERS FROM API</button>
+                <br />
+                {users.map(user =>
+                    <div>
+                        {user.name}
+                    </div>
+                )}
+            <div/>
+            <div style={{marginTop: '500px'}}>end</div>
+        </div>
         </div>
     );
 }
